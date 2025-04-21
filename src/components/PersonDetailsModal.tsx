@@ -40,6 +40,7 @@ const PersonDetailsModal = ({
           borderRadius: "24px",
           width: isMobile ? "90vw" : "50vw",
           maxHeight: "80vh",
+          maxWidth: "1200px",
           overflow: "auto",
         }}
       >
