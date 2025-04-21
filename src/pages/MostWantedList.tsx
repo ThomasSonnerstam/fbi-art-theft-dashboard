@@ -40,10 +40,10 @@ const MostWantedList = () => {
           onChange={(_, newPage) => setPage(newPage)}
           sx={{
             "& .MuiPaginationItem-root": {
-              color: "white", // Text color for all pagination items
+              color: "white",
             },
             "& .MuiPaginationItem-page.Mui-selected": {
-              color: "white", // Text color for selected page (optional, already white by default)
+              color: "white",
             },
           }}
         />
