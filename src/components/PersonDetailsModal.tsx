@@ -1,6 +1,7 @@
 import { Button, Stack, Text } from "@mantine/core";
 import { WantedPerson } from "../types/wantedPerson";
 import { useMediaQuery } from "@mantine/hooks";
+import { useEffect, useRef } from "react";
 
 interface PersonDetailsModalProps {
   person: WantedPerson | null;
@@ -14,6 +15,20 @@ const PersonDetailsModal = ({
   onClose,
 }: PersonDetailsModalProps) => {
   const isMobile = useMediaQuery("(max-width: 900px)");
+  const closeButtonRef = useRef<HTMLButtonElement>(null);
+  const previousFocusRef = useRef<HTMLElement | null>(null);
+
+  useEffect(() => {
+    if (opened) {
+      previousFocusRef.current = document.activeElement as HTMLElement;
+
+      if (closeButtonRef.current) {
+        closeButtonRef.current.focus();
+      }
+    } else if (previousFocusRef.current) {
+      previousFocusRef.current.focus();
+    }
+  }, [opened]);
 
   if (!person) return null;
 
@@ -32,6 +47,10 @@ const PersonDetailsModal = ({
         alignItems: "center",
         zIndex: 1000,
       }}
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="modal-title"
+      aria-describedby="modal-description"
     >
       <div
         style={{
@@ -52,12 +71,22 @@ const PersonDetailsModal = ({
               justifyContent: "flex-end",
             }}
           >
-            <Button color="red" onClick={onClose}>
+            <Button
+              ref={closeButtonRef}
+              color="red"
+              onClick={onClose}
+              aria-label="Close details modal"
+            >
               Close
             </Button>
           </div>
 
-          <Text fw={700} size="lg" style={{ textAlign: "center" }}>
+          <Text
+            id="modal-title"
+            fw={700}
+            size="lg"
+            style={{ textAlign: "center" }}
+          >
             {person.title}
           </Text>
           {person.images && person.images.length > 0 && (
@@ -74,7 +103,12 @@ const PersonDetailsModal = ({
             </div>
           )}
 
-          <Text fw={600} mt="md" style={{ textAlign: "center" }}>
+          <Text
+            id="modal-description"
+            fw={600}
+            mt="md"
+            style={{ textAlign: "center" }}
+          >
             Description:
           </Text>
           <Text style={{ textAlign: "center" }}>

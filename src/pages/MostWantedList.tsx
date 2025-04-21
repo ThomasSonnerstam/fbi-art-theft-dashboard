@@ -29,8 +29,6 @@ const MostWantedList = () => {
     setModalOpen(true);
   };
 
-  console.log("data", data);
-
   if (isLoading) return <div>Loading...</div>;
   if (error) return <div>Error: {error.message}</div>;
   if (!data || !data.items) return <div>No data available</div>;
@@ -51,11 +49,10 @@ const MostWantedList = () => {
   });
 
   const tableRows = filteredData.map((person) => (
-    <Table.Tr key={person.id}>
+    <Table.Tr key={person.uid}>
       <Table.Td>{person.title || "N/A"}</Table.Td>
       <Table.Td>{person.description || "N/A"}</Table.Td>
       <Table.Td>{person.nationality || "N/A"}</Table.Td>
-      <Table.Td>{person.sex || "N/A"}</Table.Td>
       <Table.Td>
         <Button
           size="xs"
@@ -75,6 +72,8 @@ const MostWantedList = () => {
       <Group>
         <Select
           label="Search by"
+          id="search-field"
+          aria-label="Search field selector"
           value={searchField}
           onChange={(value) => setSearchField(value || "title")}
           data={[
@@ -85,6 +84,8 @@ const MostWantedList = () => {
           style={{ width: "200px" }}
         />
         <Input
+          id="search-input"
+          aria-label={`Search by ${searchField}`}
           placeholder={`Search by ${searchField}...`}
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
@@ -113,22 +114,35 @@ const MostWantedList = () => {
         />
       </Stack>
 
-      <Table>
+      <Table aria-label="FBI Most Wanted Persons">
         <Table.Thead>
           <Table.Tr>
-            <Table.Th align="left" style={{ padding: "12px 0", width: "25%" }}>
+            <Table.Th
+              scope="col"
+              align="left"
+              style={{ padding: "12px 0", width: "25%" }}
+            >
               Name
             </Table.Th>
-            <Table.Th align="left" style={{ padding: "12px 0", width: "50%" }}>
+            <Table.Th
+              scope="col"
+              align="left"
+              style={{ padding: "12px 0", width: "50%" }}
+            >
               Description
             </Table.Th>
-            <Table.Th align="left" style={{ padding: "12px 0", width: "15%" }}>
+            <Table.Th
+              scope="col"
+              align="left"
+              style={{ padding: "12px 0", width: "15%" }}
+            >
               Nationality
             </Table.Th>
-            <Table.Th align="left" style={{ padding: "12px 0", width: "10%" }}>
-              Sex
-            </Table.Th>
-            <Table.Th align="left" style={{ padding: "12px 0", width: "10%" }}>
+            <Table.Th
+              scope="col"
+              align="left"
+              style={{ padding: "12px 0", width: "10%" }}
+            >
               Details
             </Table.Th>
           </Table.Tr>

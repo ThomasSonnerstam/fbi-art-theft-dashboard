@@ -1,5 +1,5 @@
 export type WantedPerson = {
-  id: string;
+  uid: string;
   title: string;
   description?: string;
   images?: {
