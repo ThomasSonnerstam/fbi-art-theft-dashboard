@@ -12,3 +12,8 @@ This app is a simple React application that displays a list of wanted persons fr
 ```
 VITE_FBI_API_KEY=your_api_key
 ```
+
+## Notes
+
+This app uses TanStack Query to fetch the data from the FBI's Most Wanted API and Mantine for the UI.
+TanStack Query is a powerful library for data fetching, caching, and state management in React applications.
