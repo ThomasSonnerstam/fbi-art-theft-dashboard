@@ -1,22 +1,41 @@
 import { useState } from "react";
-import { Container, Group, Table, Text } from "@mantine/core";
+import { Button, Container, Group, Table, Text } from "@mantine/core";
 import { Pagination } from "@mui/material";
 import { useWantedPersons } from "../queries/useFbiData";
+import { WantedPerson } from "../types/wantedPerson";
+import PersonDetailsModal from "../components/PersonDetailsModal";
 
 const MostWantedList = () => {
   const [pageSize] = useState(20);
   const [page, setPage] = useState(1);
   const { data, isLoading, error } = useWantedPersons(page, pageSize);
+  const [selectedPerson, setSelectedPerson] = useState<WantedPerson | null>(
+    null
+  );
+  const [modalOpen, setModalOpen] = useState(false);
+
+  const openPersonModal = (person: WantedPerson) => {
+    setSelectedPerson(person);
+    setModalOpen(true);
+  };
 
   console.log("data", data);
-  console.log("name", data?.items[5].title);
 
   const tableRows = data?.items?.map((person) => (
     <Table.Tr key={person.id}>
-      <Table.Td>{person.title}</Table.Td>
-      <Table.Td>{person.description}</Table.Td>
-      <Table.Td>{person.nationality}</Table.Td>
-      <Table.Td>{person.sex}</Table.Td>
+      <Table.Td>{person.title || "N/A"}</Table.Td>
+      <Table.Td>{person.description || "N/A"}</Table.Td>
+      <Table.Td>{person.nationality || "N/A"}</Table.Td>
+      <Table.Td>{person.sex || "N/A"}</Table.Td>
+      <Table.Td>
+        <Button
+          size="xs"
+          onClick={() => openPersonModal(person)}
+          variant="filled"
+        >
+          View
+        </Button>
+      </Table.Td>
     </Table.Tr>
   ));
 
@@ -52,14 +71,31 @@ const MostWantedList = () => {
       <Table>
         <Table.Thead>
           <Table.Tr>
-            <Table.Th align="left">Name</Table.Th>
-            <Table.Th align="left">Description</Table.Th>
-            <Table.Th align="left">Nationality</Table.Th>
-            <Table.Th align="left">Sex</Table.Th>
+            <Table.Th align="left" style={{ padding: "12px 0", width: "25%" }}>
+              Name
+            </Table.Th>
+            <Table.Th align="left" style={{ padding: "12px 0", width: "50%" }}>
+              Description
+            </Table.Th>
+            <Table.Th align="left" style={{ padding: "12px 0", width: "15%" }}>
+              Nationality
+            </Table.Th>
+            <Table.Th align="left" style={{ padding: "12px 0", width: "10%" }}>
+              Sex
+            </Table.Th>
+            <Table.Th align="left" style={{ padding: "12px 0", width: "10%" }}>
+              Actions
+            </Table.Th>
           </Table.Tr>
         </Table.Thead>
         <Table.Tbody>{tableRows}</Table.Tbody>
       </Table>
+
+      <PersonDetailsModal
+        person={selectedPerson}
+        opened={modalOpen}
+        onClose={() => setModalOpen(false)}
+      />
     </Container>
   );
 };
