@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Button, Container, Group, Table, Text } from "@mantine/core";
+import { Button, Stack, Table, Text } from "@mantine/core";
 import { Pagination } from "@mui/material";
 import { useWantedPersons } from "../queries/useFbiData";
 import { WantedPerson } from "../types/wantedPerson";
@@ -46,8 +46,8 @@ const MostWantedList = () => {
   const totalPages = Math.ceil((data.total || 0) / pageSize);
 
   return (
-    <Container>
-      <Group justify="space-between" mt="md">
+    <Stack>
+      <Stack justify="space-between" mt="md">
         <Text size="sm">
           Showing {data.items.length} of {data.total} results
         </Text>
@@ -66,7 +66,7 @@ const MostWantedList = () => {
             },
           }}
         />
-      </Group>
+      </Stack>
 
       <Table>
         <Table.Thead>
@@ -96,7 +96,7 @@ const MostWantedList = () => {
         opened={modalOpen}
         onClose={() => setModalOpen(false)}
       />
-    </Container>
+    </Stack>
   );
 };
 
